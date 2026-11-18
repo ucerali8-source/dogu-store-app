@@ -1,107 +1,149 @@
 <!doctype html>
 <html lang="tr">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#111111">
-<title>DOĞU STORE</title>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#090909"><title>DOĞU STORE | Yönetim</title>
 <style>
-:root{--bg:#101010;--panel:#1b1b1b;--gold:#d6b15e;--muted:#aaa;--line:#333;--green:#65c18c;--red:#ff7777}
+:root{--bg:#0d0d0e;--panel:#19191b;--panel2:#222225;--gold:#d8b765;--muted:#aaa;--line:#38383b;--green:#65c98b;--red:#ff7777}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:#f5f5f5;font:15px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-header{padding:22px 18px 16px;background:#080808;border-bottom:1px solid #393126;position:sticky;top:0;z-index:3}
-h1{margin:0;color:var(--gold);font-size:23px;letter-spacing:2px}header small{color:#bbb;letter-spacing:1px}
-nav{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:10px;background:#111;position:sticky;top:77px;z-index:2}
-nav button{padding:11px 3px;border:1px solid #383838;border-radius:10px;background:#202020;color:#ddd;font-size:12px}
-nav button.active{background:var(--gold);color:#111;border-color:var(--gold);font-weight:700}
-main{padding:14px;max-width:720px;margin:auto}.panel{display:none}.panel.active{display:block}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;margin:0 0 12px}
-h2{font-size:18px;margin:0 0 12px;color:var(--gold)}.stats{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-.stat{background:#222;border-radius:12px;padding:13px}.stat span{display:block;color:var(--muted);font-size:12px}.stat b{display:block;font-size:20px;margin-top:5px}
-label{display:block;color:#ccc;font-size:13px;margin:10px 0 5px}
-input,select{width:100%;padding:12px;border-radius:9px;border:1px solid #444;background:#101010;color:white;font-size:16px}
-button.action{width:100%;padding:13px;border:0;border-radius:10px;background:var(--gold);color:#111;font-weight:700;font-size:15px;margin-top:12px}
-button.secondary{background:#333;color:#fff}button.danger{background:#6d2929;color:#fff}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-.item{padding:11px 0;border-bottom:1px solid #333;display:flex;justify-content:space-between;gap:10px;align-items:center}
-.item:last-child{border:0}.muted{color:var(--muted);font-size:12px}.pill{font-size:11px;color:#111;background:var(--gold);border-radius:20px;padding:4px 8px}
-.empty{color:#aaa;text-align:center;padding:18px}
-#notice{position:fixed;bottom:15px;left:12px;right:12px;background:#272727;border:1px solid #555;padding:12px;border-radius:10px;display:none;z-index:9}
-footer{text-align:center;color:#777;font-size:11px;padding:20px}
-</style>
-</head>
+header{padding:18px 16px 13px;background:#050505;border-bottom:1px solid #393126;position:sticky;top:0;z-index:5}h1{margin:0;color:var(--gold);font-size:22px;letter-spacing:2px}header small{color:#bbb;font-size:11px;letter-spacing:1px}
+nav{display:flex;gap:6px;overflow:auto;padding:9px;background:#111;position:sticky;top:65px;z-index:4;scrollbar-width:none}nav button{flex:0 0 auto;padding:10px 13px;border:1px solid #383838;border-radius:9px;background:#202020;color:#ddd;font-size:12px}nav button.active{background:var(--gold);color:#111;border-color:var(--gold);font-weight:700}
+main{padding:13px;max-width:850px;margin:auto}.panel{display:none}.panel.active{display:block}.card{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:13px;margin:0 0 12px}
+h2{font-size:17px;margin:0 0 11px;color:var(--gold)}h3{font-size:14px;margin:10px 0;color:#eee}.stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}.stat{background:var(--panel2);border-radius:10px;padding:12px;min-width:0}.stat span{display:block;color:var(--muted);font-size:11px}.stat b{display:block;font-size:18px;margin-top:5px;overflow-wrap:anywhere}
+label{display:block;color:#ccc;font-size:12px;margin:9px 0 5px}input,select,textarea{width:100%;padding:11px;border-radius:8px;border:1px solid #444;background:#101012;color:white;font-size:16px;min-width:0}input[type=date],input[type=datetime-local]{font-size:14px}
+button{cursor:pointer}button.action{width:100%;padding:12px;border:0;border-radius:9px;background:var(--gold);color:#111;font-weight:700;font-size:14px;margin-top:10px}button.secondary{background:#363638;color:#fff}button.danger{background:#702d2d;color:#fff}button.small{padding:7px 9px;border:1px solid #555;border-radius:7px;background:#303034;color:#fff;font-size:12px;margin:3px 2px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:8px}.row3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.muted{color:var(--muted);font-size:12px}.empty{color:#aaa;text-align:center;padding:16px}.item{padding:10px 0;border-bottom:1px solid #333;display:flex;justify-content:space-between;gap:8px;align-items:center}.item:last-child{border:0}.item-main{min-width:0;flex:1}.item-main b{overflow-wrap:anywhere}.pill{font-size:10px;color:#111;background:var(--gold);border-radius:20px;padding:4px 7px;white-space:nowrap}.green{color:var(--green)}.red{color:var(--red)}.toolbar{display:flex;gap:7px;flex-wrap:wrap}.toolbar>*{flex:1;min-width:115px}#notice{position:fixed;bottom:14px;left:12px;right:12px;background:#29292b;border:1px solid #666;padding:12px;border-radius:10px;display:none;z-index:20;text-align:center}footer{text-align:center;color:#777;font-size:10px;padding:18px}
+.result{width:100%;display:flex;justify-content:space-between;align-items:center;text-align:left;background:#222;color:#fff;border:0;border-bottom:1px solid #444;padding:11px;border-radius:0}.result:first-child{border-radius:8px 8px 0 0}.result:last-child{border-radius:0 0 8px 8px}
+.hidden{display:none!important}.hint{font-size:11px;color:#999;line-height:1.5}.tag{display:inline-block;border:1px solid #555;border-radius:6px;padding:3px 6px;font-size:10px;color:#ccc;margin:2px}
+@media(min-width:650px){.stats{grid-template-columns:repeat(4,1fr)}}
+</style></head>
 <body>
-<header><h1>DOĞU STORE</h1><small>STİL DOĞU’DAN DOĞAR</small></header>
-<nav>
-<button class="active" data-tab="home">Özet</button><button data-tab="products">Ürünler</button><button data-tab="sales">Satış</button><button data-tab="reports">Rapor</button>
+<header><h1>DOĞU STORE</h1><small>STİL DOĞU’DAN DOĞAR • YÖNETİM PANELİ</small></header>
+<nav id="nav">
+<button class="active" data-tab="home">Özet</button><button data-tab="products">Ürün / Stok</button><button data-tab="sales">Satış</button><button data-tab="history">Satış geçmişi</button><button data-tab="returns">İade / Değişim</button><button data-tab="expenses">Giderler</button><button data-tab="reports">Raporlar</button><button data-tab="settings">Yönetim / Yedek</button>
 </nav>
 <main>
 <section id="home" class="panel active">
 <div class="stats">
-<div class="stat"><span>Bugünkü ciro</span><b id="todayRevenue">₺0</b></div>
-<div class="stat"><span>Bugünkü kâr</span><b id="todayProfit">₺0</b></div>
-<div class="stat"><span>Ürün çeşidi</span><b id="productCount">0</b></div>
-<div class="stat"><span>Toplam stok</span><b id="stockCount">0</b></div>
+<div class="stat"><span>Bugünkü ciro</span><b id="hRevenue">₺0</b></div><div class="stat"><span>Bugünkü brüt kâr</span><b id="hGross">₺0</b></div><div class="stat"><span>Bugünkü gider</span><b id="hExpense">₺0</b></div><div class="stat"><span>Bugünkü net kâr</span><b id="hNet">₺0</b></div>
+<div class="stat"><span>Ürün çeşidi</span><b id="hKinds">0</b></div><div class="stat"><span>Toplam stok</span><b id="hStock">0</b></div><div class="stat"><span>Bugünkü satış</span><b id="hCount">0</b></div><div class="stat"><span>İade tutarı</span><b id="hReturn">₺0</b></div>
 </div>
-<div class="card" style="margin-top:12px"><h2>Son satışlar</h2><div id="recentSales" class="empty">Henüz satış yok.</div></div>
+<div class="card" style="margin-top:12px"><h2>Son işlemler</h2><div id="homeRecent" class="empty">Henüz işlem yok.</div></div>
+<div class="card"><h2>En çok satılan ürünler</h2><div id="bestProducts" class="empty">Henüz satış yok.</div></div>
 </section>
+
 <section id="products" class="panel">
-<div class="card"><h2>Yeni ürün ekle</h2>
+<div class="card"><h2 id="productFormTitle">Ürün ekle</h2><input id="editProductId" type="hidden">
 <label>Ürün adı</label><input id="pName" placeholder="Örn. Siyah triko kazak">
-<div class="row"><div><label>Alış fiyatı (₺)</label><input id="pCost" type="number" min="0" inputmode="decimal" placeholder="400"></div><div><label>Satış fiyatı (₺)</label><input id="pPrice" type="number" min="0" inputmode="decimal" placeholder="850"></div></div>
-<div class="row"><div><label>Stok adedi</label><input id="pStock" type="number" min="0" inputmode="numeric" placeholder="10"></div><div><label>Barkod (isteğe bağlı)</label><input id="pBarcode" placeholder="Barkod"></div></div>
-<button class="action" id="addProduct">Ürünü kaydet</button></div>
-<div class="card"><h2>Ürün listesi</h2><input id="productSearch" placeholder="Ürün veya barkod ara"><div id="productList" class="empty">Henüz ürün eklenmedi.</div></div>
-</section>
-<section id="sales" class="panel">
-<div class="card"><h2>Satış kaydı</h2>
-<label>Ürün</label><select id="saleProduct"><option value="">Ürün seç</option></select>
-<div class="row"><div><label>Adet</label><input id="saleQty" type="number" min="1" value="1" inputmode="numeric"></div><div><label>Ödeme</label><select id="salePayment"><option>Nakit</option><option>IBAN</option><option>Kredi kartı</option></select></div></div>
-<label>Müşteri adı (isteğe bağlı)</label><input id="saleCustomer" placeholder="Müşteri adı">
-<button class="action" id="saveSale">Satışı kaydet</button>
-<p class="muted">Satış kaydedilince stok otomatik azalır. Kâr, satış fiyatı eksi alış fiyatı olarak hesaplanır.</p></div>
-<div class="card"><h2>Satış geçmişi</h2><div id="salesList" class="empty">Henüz satış yok.</div></div>
-</section>
-<section id="reports" class="panel">
-<div class="stats">
-<div class="stat"><span>Toplam ciro</span><b id="totalRevenue">₺0</b></div>
-<div class="stat"><span>Toplam ürün kârı</span><b id="totalProfit">₺0</b></div>
-<div class="stat"><span>Nakit</span><b id="cashTotal">₺0</b></div>
-<div class="stat"><span>IBAN + Kart</span><b id="otherTotal">₺0</b></div>
+<div class="row"><div><label>Alış fiyatı (₺)</label><input id="pCost" type="number" min="0" step=".01" inputmode="decimal"></div><div><label>Satış fiyatı (₺)</label><input id="pPrice" type="number" min="0" step=".01" inputmode="decimal"></div></div>
+<div class="row"><div><label>Stok adedi</label><input id="pStock" type="number" min="0" step="1" inputmode="numeric"></div><div><label>Barkod</label><input id="pBarcode" placeholder="Barkod / ürün kodu"></div></div>
+<div class="row"><div><label>Beden</label><input id="pSize" placeholder="S / M / L / XL"></div><div><label>Renk</label><input id="pColor" placeholder="Siyah"></div></div>
+<div class="toolbar"><button class="action" id="saveProduct">Ürünü kaydet</button><button class="action secondary hidden" id="cancelProductEdit">Düzenlemeyi iptal et</button></div>
 </div>
-<div class="card" style="margin-top:12px"><h2>Veri yedekleme</h2><button class="action" id="exportData">Yedeği indir</button><label>Yedek dosyasından geri yükle</label><input id="importFile" type="file" accept="application/json"><button class="action secondary" id="clearData">Tüm kayıtları sil</button><p class="muted">Kayıtlar bu cihazın tarayıcısında saklanır. Bu sürümde bulut yedekleme ve kullanıcı hesabı yoktur.</p></div>
+<div class="card"><h2>Ürün listesi</h2><input id="productSearch" placeholder="Ürün adı, beden, renk veya barkod ara"><div id="productList" class="empty">Henüz ürün yok.</div></div>
 </section>
-</main>
-<footer>DOĞU STORE • Basit satış ve stok takibi</footer><div id="notice"></div>
+
+<section id="sales" class="panel">
+<div class="card"><h2>Hızlı satış</h2>
+<label>Ürün ara (isim veya barkod)</label><input id="saleSearch" type="search" placeholder="Ürün adını yaz, anında bul..."><div id="saleResults" class="empty">Aramak için yazmaya başla.</div>
+<h3>Satış sepeti</h3><div id="cartList" class="empty">Henüz ürün seçilmedi.</div>
+<div class="row"><div><label>İndirim (₺)</label><input id="saleDiscount" type="number" min="0" step=".01" value="0"></div><div><label>Ödeme yöntemi</label><select id="salePayment"><option>Nakit</option><option>IBAN</option><option>Kredi kartı</option></select></div></div>
+<label>Müşteri adı</label><input id="saleCustomer" placeholder="İsteğe bağlı müşteri adı">
+<label>Satış tarihi ve saati</label><input id="saleDate" type="datetime-local">
+<div class="stat" style="margin-top:10px"><span>Ödenecek tutar</span><b id="cartTotal">₺0</b><span id="cartProfit" class="muted">Tahmini brüt kâr: ₺0</span></div>
+<button class="action" id="saveSale">Satışı kaydet</button><p class="hint">Ürüne dokununca sepete eklenir. Her kayıtta tarih ve saat saklanır; stok otomatik azalır.</p>
+</div></section>
+
+<section id="history" class="panel">
+<div class="card"><h2>Satış geçmişi</h2><div class="row"><div><label>Başlangıç</label><input id="historyFrom" type="date"></div><div><label>Bitiş</label><input id="historyTo" type="date"></div></div><label>Satış / müşteri / ürün ara</label><input id="historySearch" placeholder="Arama yap..."><div id="historyList" class="empty">Satış bulunamadı.</div></div>
+</section>
+
+<section id="returns" class="panel">
+<div class="card"><h2>İade / değişim kaydı</h2><label>Satış seç (satış no, ürün veya müşteri ara)</label><input id="returnSearch" placeholder="Satış ara..."><div id="returnSales" class="empty">İade edilecek satışı ara.</div>
+<div id="returnForm" class="hidden"><input id="returnSaleId" type="hidden"><div class="row"><div><label>İade adedi</label><input id="returnQty" type="number" min="1" value="1"></div><div><label>İşlem türü</label><select id="returnType"><option value="refund">Para iadesi</option><option value="exchange">Değişim</option></select></div></div>
+<label>İade nedeni</label><input id="returnReason" placeholder="Beden uymadı vb."><label>Para iadesi yöntemi</label><select id="returnPayment"><option>Nakit</option><option>IBAN</option><option>Kredi kartı</option></select>
+<div id="exchangeArea" class="hidden"><label>Değişim yapılacak yeni ürün</label><input id="exchangeSearch" placeholder="Yeni ürün ara"><div id="exchangeResults"></div><div id="exchangeChosen" class="muted">Yeni ürün seçilmedi.</div></div>
+<button class="action" id="saveReturn">İade / değişimi kaydet</button></div>
+</div><div class="card"><h2>İade geçmişi</h2><div id="returnList" class="empty">Henüz iade yok.</div></div>
+</section>
+
+<section id="expenses" class="panel">
+<div class="card"><h2 id="expenseFormTitle">Gider ekle</h2><input id="editExpenseId" type="hidden"><label>Gider açıklaması</label><input id="eName" placeholder="Kira, elektrik, kargo..."><div class="row"><div><label>Tutar (₺)</label><input id="eAmount" type="number" min="0" step=".01"></div><div><label>Kategori</label><select id="eCategory"><option>Kira</option><option>Personel</option><option>Elektrik / Su</option><option>Kargo</option><option>Mal alımı</option><option>Vergi</option><option>Diğer</option></select></div></div><label>Gider tarihi</label><input id="eDate" type="datetime-local"><div class="toolbar"><button class="action" id="saveExpense">Gideri kaydet</button><button class="action secondary hidden" id="cancelExpenseEdit">Vazgeç</button></div></div>
+<div class="card"><h2>Gider geçmişi</h2><div class="row"><div><label>Başlangıç</label><input id="expenseFrom" type="date"></div><div><label>Bitiş</label><input id="expenseTo" type="date"></div></div><div id="expenseList" class="empty">Henüz gider yok.</div></div>
+</section>
+
+<section id="reports" class="panel">
+<div class="card"><h2>Rapor dönemi</h2><div class="row"><div><label>Başlangıç tarihi</label><input id="reportFrom" type="date"></div><div><label>Bitiş tarihi</label><input id="reportTo" type="date"></div></div><div class="toolbar"><button class="small" data-period="day">Bugün</button><button class="small" data-period="week">Bu hafta</button><button class="small" data-period="month">Bu ay</button><button class="small" data-period="year">Bu yıl</button></div></div>
+<div class="stats"><div class="stat"><span>Ciro</span><b id="rRevenue">₺0</b></div><div class="stat"><span>Brüt kâr</span><b id="rGross">₺0</b></div><div class="stat"><span>Gider</span><b id="rExpense">₺0</b></div><div class="stat"><span>Net kâr</span><b id="rNet">₺0</b></div><div class="stat"><span>İade</span><b id="rReturns">₺0</b></div><div class="stat"><span>Satış adedi</span><b id="rSales">0</b></div></div>
+<div class="card" style="margin-top:12px"><h2>Ödeme dağılımı</h2><div id="paymentReport"></div></div>
+</section>
+
+<section id="settings" class="panel">
+<div class="card"><h2>Yönetici kilidi</h2><p class="hint">Bu PIN, yalnızca bu cihazdaki ekranı kilitler; gerçek sunucu güvenliği değildir. Gerçek çok kullanıcılı güvenlik için sunucu tarafı hesap gerekir.</p><label>Yeni yönetici PIN'i (4–8 rakam)</label><input id="newPin" inputmode="numeric" type="password" maxlength="8" placeholder="PIN belirle"><button class="action" id="setPin">PIN belirle / değiştir</button><button class="action secondary" id="lockNow">Şimdi kilitle</button></div>
+<div class="card"><h2>Yedekleme ve geri yükleme</h2><button class="action" id="exportData">Yedeği indir (JSON)</button><label>Yedek dosyasından geri yükle</label><input id="importFile" type="file" accept="application/json"><p class="hint">Veriler bu tarayıcıda saklanır. Tarayıcı verileri silinirse yedek dosyasından geri yüklenebilir. Bu sürümde bulut senkronizasyonu yoktur.</p></div>
+<div class="card"><h2>Veri bilgisi</h2><div id="dataInfo" class="muted"></div><button class="action danger" id="clearData">Tüm verileri sil</button></div>
+</section>
+</main><footer>DOĞU STORE • Mağaza yönetim sistemi</footer><div id="notice"></div>
 <script>
-(function(){
-'use strict';
-const $=id=>document.getElementById(id), money=n=>'₺'+Number(n||0).toLocaleString('tr-TR',{maximumFractionDigits:2});
-let db={products:[],sales:[]};
-try{const saved=localStorage.getItem('dogu_store_v1');if(saved){const parsed=JSON.parse(saved);if(parsed&&Array.isArray(parsed.products)&&Array.isArray(parsed.sales))db=parsed;}}catch(e){}
-function persist(){try{localStorage.setItem('dogu_store_v1',JSON.stringify(db));}catch(e){notify('Bu tarayıcı kayıt alanına izin vermedi.');}}
-function notify(msg){const n=$('notice');n.textContent=msg;n.style.display='block';clearTimeout(notify.t);notify.t=setTimeout(()=>n.style.display='none',2600);}
-function safe(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-function dateKey(d){const x=new Date(d);return x.getFullYear()+'-'+String(x.getMonth()+1).padStart(2,'0')+'-'+String(x.getDate()).padStart(2,'0');}
-function render(){
-const today=dateKey(Date.now()), ts=db.sales.filter(s=>dateKey(s.date)===today);
-$('todayRevenue').textContent=money(ts.reduce((a,s)=>a+s.total,0));$('todayProfit').textContent=money(ts.reduce((a,s)=>a+s.profit,0));
-$('productCount').textContent=db.products.length;$('stockCount').textContent=db.products.reduce((a,p)=>a+p.stock,0);
-$('totalRevenue').textContent=money(db.sales.reduce((a,s)=>a+s.total,0));$('totalProfit').textContent=money(db.sales.reduce((a,s)=>a+s.profit,0));
-$('cashTotal').textContent=money(db.sales.filter(s=>s.payment==='Nakit').reduce((a,s)=>a+s.total,0));
-$('otherTotal').textContent=money(db.sales.filter(s=>s.payment!=='Nakit').reduce((a,s)=>a+s.total,0));
-$('productList').innerHTML=db.products.length?db.products.filter(p=>(p.name+' '+p.barcode).toLowerCase().includes($('productSearch').value.toLowerCase())).map(p=>`<div class="item"><div><b>${safe(p.name)}</b><div class="muted">Alış ${money(p.cost)} • Satış ${money(p.price)} • Stok ${p.stock} ${p.barcode?'• '+safe(p.barcode):''}</div></div><span class="pill">${p.stock<=2?'Az stok':'Stokta'}</span></div>`).join(''):'<div class="empty">Henüz ürün eklenmedi.</div>';
-$('saleProduct').innerHTML='<option value="">Ürün seç</option>'+db.products.map(p=>`<option value="${p.id}">${safe(p.name)} — stok: ${p.stock} — ${money(p.price)}</option>`).join('');
-const list=arr=>arr.length?arr.map(s=>`<div class="item"><div><b>${safe(s.name)}</b><div class="muted">${new Date(s.date).toLocaleString('tr-TR')} • ${s.qty} adet • ${safe(s.payment)}${s.customer?' • '+safe(s.customer):''}</div></div><div><b>${money(s.total)}</b><div class="muted">Kâr ${money(s.profit)}</div></div></div>`).join(''):'<div class="empty">Henüz satış yok.</div>';
-$('salesList').innerHTML=list([...db.sales].reverse());$('recentSales').innerHTML=list([...db.sales].slice(-3).reverse());
-}
-document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.panel').forEach(x=>x.classList.toggle('active',x.id===b.dataset.tab));render();}));
-$('addProduct').addEventListener('click',()=>{const name=$('pName').value.trim(),cost=Number($('pCost').value),price=Number($('pPrice').value),stock=Number($('pStock').value);if(!name||$('pCost').value===''||$('pPrice').value===''||$('pStock').value===''||cost<0||price<0||stock<0||!Number.isFinite(stock)){notify('Ürün bilgilerini doğru doldur.');return;}db.products.push({id:Date.now()+Math.random(),name,cost,price,stock:Math.floor(stock),barcode:$('pBarcode').value.trim()});persist();['pName','pCost','pPrice','pStock','pBarcode'].forEach(id=>$(id).value='');render();notify('Ürün kaydedildi.');});
-$('productSearch').addEventListener('input',render);
-$('saveSale').addEventListener('click',()=>{const p=db.products.find(x=>String(x.id)===$('saleProduct').value),qty=Math.floor(Number($('saleQty').value));if(!p){notify('Önce ürün seç.');return;}if(!Number.isInteger(qty)||qty<1){notify('Adet en az 1 olmalı.');return;}if(p.stock<qty){notify('Yeterli stok yok.');return;}const total=p.price*qty,profit=(p.price-p.cost)*qty;p.stock-=qty;db.sales.push({id:Date.now()+Math.random(),productId:p.id,name:p.name,qty,total,profit,payment:$('salePayment').value,customer:$('saleCustomer').value.trim(),date:new Date().toISOString()});persist();$('saleQty').value=1;$('saleCustomer').value='';render();notify('Satış kaydedildi, stok düşüldü.');});
-$('exportData').addEventListener('click',()=>{const blob=new Blob([JSON.stringify(db,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='dogu-store-yedek.json';a.click();URL.revokeObjectURL(url);});
-$('importFile').addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;try{const d=JSON.parse(await f.text());if(!Array.isArray(d.products)||!Array.isArray(d.sales))throw Error();db=d;persist();render();notify('Yedek geri yüklendi.');}catch(_){notify('Yedek dosyası geçersiz.');}e.target.value='';});
-$('clearData').addEventListener('click',()=>{if(confirm('Tüm ürün ve satış kayıtları silinsin mi? Bu işlem geri alınamaz.')){db={products:[],sales:[]};persist();render();notify('Kayıtlar silindi.');}});
+(()=>{'use strict';
+const $=id=>document.getElementById(id), money=n=>'₺'+Number(n||0).toLocaleString('tr-TR',{maximumFractionDigits:2}), nowLocal=()=>{let d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,16)}, dayKey=d=>{let x=new Date(d);return x.getFullYear()+'-'+String(x.getMonth()+1).padStart(2,'0')+'-'+String(x.getDate()).padStart(2,'0')}, uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+let db={products:[],sales:[],expenses:[],returns:[],pinHash:null},cart=[],exchangeProductId=null,selectedReturnSale=null;
+try{let raw=localStorage.getItem('dogu_store_v1');if(raw){let old=JSON.parse(raw);if(old&&Array.isArray(old.products)&&Array.isArray(old.sales))db={products:old.products,sales:old.sales,expenses:old.expenses||[],returns:old.returns||[],pinHash:old.pinHash||null};}}catch(e){}
+db.products.forEach(p=>{p.id=p.id??uid();p.cost=Number(p.cost)||0;p.price=Number(p.price)||0;p.stock=Number(p.stock)||0;p.barcode=p.barcode||'';p.size=p.size||'';p.color=p.color||'';});
+db.sales.forEach(s=>{s.id=s.id??uid();s.total=Number(s.total)||0;s.profit=Number(s.profit)||0;s.status=s.status||'completed';s.items=s.items||[{productId:s.productId,name:s.name,qty:s.qty||1,cost:s.cost||0,price:s.price??(s.total/(s.qty||1)),total:s.total,profit:s.profit}];});
+function persist(){try{localStorage.setItem('dogu_store_v1',JSON.stringify(db));}catch(e){toast('Tarayıcı depolama alanı dolu olabilir. Yedek alıp tekrar deneyin.');}}
+function toast(t){let n=$('notice');n.textContent=t;n.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(()=>n.style.display='none',2600)}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function dt(v){return new Date(v).toLocaleString('tr-TR',{dateStyle:'short',timeStyle:'short'})}
+function isBetween(v,a,b){let d=dayKey(v);return(!a||d>=a)&&(!b||d<=b)}
+function completedSales(){return db.sales.filter(s=>s.status!=='cancelled')}
+function activeReturns(){return db.returns}
+function expenseSum(a,b){return db.expenses.filter(e=>isBetween(e.date,a,b)).reduce((n,e)=>n+Number(e.amount),0)}
+function returnSum(a,b){return db.returns.filter(r=>isBetween(r.date,a,b)&&r.type==='refund').reduce((n,r)=>n+Number(r.amount),0)}
+function saleNet(s){return Number(s.total)||0}
+function grossFor(s){return Number(s.profit)||0}
+function setTab(id){document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id===id));render()}
+document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()=>setTab(b.dataset.tab)));
+function renderProducts(){let q=$('productSearch').value.toLocaleLowerCase('tr-TR');let arr=db.products.filter(p=>(p.name+' '+p.barcode+' '+p.size+' '+p.color).toLocaleLowerCase('tr-TR').includes(q));$('productList').innerHTML=arr.length?arr.map(p=>`<div class="item"><div class="item-main"><b>${esc(p.name)}</b><div class="muted">Alış ${money(p.cost)} • Satış ${money(p.price)} • Stok ${p.stock}</div><span class="tag">${esc(p.size||'Beden yok')}</span><span class="tag">${esc(p.color||'Renk yok')}</span>${p.barcode?`<span class="tag">${esc(p.barcode)}</span>`:''}</div><div><button class="small" data-edit-product="${esc(p.id)}">Düzenle</button><button class="small danger" data-del-product="${esc(p.id)}">Sil</button></div></div>`).join(''):'<div class="empty">Ürün bulunamadı.</div>'}
+function renderSearch(){let q=$('saleSearch').value.trim().toLocaleLowerCase('tr-TR');let arr=db.products.filter(p=>(p.name+' '+p.barcode+' '+p.size+' '+p.color).toLocaleLowerCase('tr-TR').includes(q)&&p.stock>0).slice(0,30);$('saleResults').innerHTML=arr.length?arr.map(p=>`<button class="result" data-add-cart="${esc(p.id)}"><span><b>${esc(p.name)}</b><span class="muted" style="display:block">Stok ${p.stock} • ${esc(p.size)} ${esc(p.color)} • ${money(p.price)} ${p.barcode?'• '+esc(p.barcode):''}</span></span><b>+ Ekle</b></button>`).join(''):'<div class="empty">Uygun ürün bulunamadı.</div>'}
+function renderCart(){let subtotal=cart.reduce((n,i)=>n+i.price*i.qty,0),cost=cart.reduce((n,i)=>n+i.cost*i.qty,0),disc=Math.max(0,Number($('saleDiscount').value)||0),total=Math.max(0,subtotal-disc);$('cartTotal').textContent=money(total);$('cartProfit').textContent='Tahmini brüt kâr: '+money(total-cost);$('cartList').innerHTML=cart.length?cart.map(i=>`<div class="item"><div class="item-main"><b>${esc(i.name)}</b><div class="muted">${money(i.price)} × ${i.qty} • Stoktan ${i.qty} düşecek</div></div><div><button class="small" data-cart-minus="${esc(i.productId)}">−</button><b>${i.qty}</b><button class="small" data-cart-plus="${esc(i.productId)}">+</button><button class="small danger" data-cart-remove="${esc(i.productId)}">×</button></div></div>`).join(''):'<div class="empty">Henüz ürün seçilmedi.</div>'}
+function renderHistory(){let a=$('historyFrom').value,b=$('historyTo').value,q=$('historySearch').value.toLocaleLowerCase('tr-TR');let arr=completedSales().filter(s=>isBetween(s.date,a,b)&&(String(s.id)+' '+(s.customer||'')+' '+(s.items||[]).map(i=>i.name).join(' ')).toLocaleLowerCase('tr-TR').includes(q));$('historyList').innerHTML=arr.length?[...arr].reverse().map(s=>`<div class="item"><div class="item-main"><b>${esc(s.items.map(i=>i.name+' ×'+i.qty).join(', '))}</b><div class="muted">${dt(s.date)} • ${esc(s.payment)} • ${esc(s.customer||'Müşteri yok')} • #${esc(s.id)}</div><div class="muted">Ciro ${money(s.total)} • Brüt kâr ${money(s.profit)} • İade edilen ${s.returnedQty||0}</div></div><div><button class="small" data-edit-sale="${esc(s.id)}">Düzelt</button><button class="small danger" data-cancel-sale="${esc(s.id)}">İptal</button></div></div>`).join(''):'<div class="empty">Bu aramada satış bulunamadı.</div>'}
+function renderExpenses(){let a=$('expenseFrom').value,b=$('expenseTo').value,arr=db.expenses.filter(e=>isBetween(e.date,a,b));$('expenseList').innerHTML=arr.length?[...arr].reverse().map(e=>`<div class="item"><div class="item-main"><b>${esc(e.name)}</b><div class="muted">${dt(e.date)} • ${esc(e.category)}</div></div><div><b>${money(e.amount)}</b><br><button class="small" data-edit-expense="${esc(e.id)}">Düzenle</button><button class="small danger" data-del-expense="${esc(e.id)}">Sil</button></div></div>`).join(''):'<div class="empty">Gider yok.</div>'}
+function renderReturns(){ $('returnList').innerHTML=db.returns.length?[...db.returns].reverse().map(r=>`<div class="item"><div class="item-main"><b>${esc(r.name)} ×${r.qty}</b><div class="muted">${dt(r.date)} • ${r.type==='refund'?'Para iadesi':'Değişim'} • ${esc(r.reason||'')}</div></div><b>${money(r.amount)}</b></div>`).join(''):'<div class="empty">Henüz iade yok.</div>'}
+function renderReports(){let a=$('reportFrom').value,b=$('reportTo').value,sales=completedSales().filter(s=>isBetween(s.date,a,b)),revenue=sales.reduce((n,s)=>n+s.total,0),gross=sales.reduce((n,s)=>n+s.profit,0),exp=expenseSum(a,b),ret=returnSum(a,b);$('rRevenue').textContent=money(revenue);$('rGross').textContent=money(gross);$('rExpense').textContent=money(exp);$('rNet').textContent=money(gross-exp-ret);$('rReturns').textContent=money(ret);$('rSales').textContent=sales.length;let methods=['Nakit','IBAN','Kredi kartı'];$('paymentReport').innerHTML=methods.map(m=>`<div class="item"><span>${m}</span><b>${money(sales.filter(s=>s.payment===m).reduce((n,s)=>n+s.total,0))}</b></div>`).join('')}
+function renderHome(){let today=dayKey(Date.now()),s=completedSales().filter(x=>dayKey(x.date)===today),rev=s.reduce((n,x)=>n+x.total,0),gross=s.reduce((n,x)=>n+x.profit,0),exp=expenseSum(today,today),ret=returnSum(today,today);$('hRevenue').textContent=money(rev);$('hGross').textContent=money(gross);$('hExpense').textContent=money(exp);$('hNet').textContent=money(gross-exp-ret);$('hKinds').textContent=db.products.length;$('hStock').textContent=db.products.reduce((n,p)=>n+p.stock,0);$('hCount').textContent=s.length;$('hReturn').textContent=money(ret);let recent=[...completedSales()].slice(-5).reverse();$('homeRecent').innerHTML=recent.length?recent.map(x=>`<div class="item"><span>${esc(x.items.map(i=>i.name).join(', '))}<span class="muted" style="display:block">${dt(x.date)}</span></span><b>${money(x.total)}</b></div>`).join(''):'<div class="empty">Henüz işlem yok.</div>';let best={};completedSales().forEach(s=>s.items.forEach(i=>best[i.name]=(best[i.name]||0)+i.qty));let top=Object.entries(best).sort((a,b)=>b[1]-a[1]).slice(0,5);$('bestProducts').innerHTML=top.length?top.map(([n,q])=>`<div class="item"><span>${esc(n)}</span><b>${q} adet</b></div>`).join(''):'<div class="empty">Henüz satış yok.</div>'}
+function render(){renderHome();renderProducts();renderSearch();renderCart();renderHistory();renderExpenses();renderReturns();renderReports();$('dataInfo').textContent=`${db.products.length} ürün • ${db.sales.length} satış kaydı • ${db.expenses.length} gider • ${db.returns.length} iade/değişim kaydı`}
+function clearProductForm(){['pName','pCost','pPrice','pStock','pBarcode','pSize','pColor','editProductId'].forEach(id=>$(id).value='');$('productFormTitle').textContent='Ürün ekle';$('saveProduct').textContent='Ürünü kaydet';$('cancelProductEdit').classList.add('hidden')}
+$('saveProduct').addEventListener('click',()=>{let id=$('editProductId').value,name=$('pName').value.trim(),cost=Number($('pCost').value),price=Number($('pPrice').value),stock=Number($('pStock').value);if(!name||$('pCost').value===''||$('pPrice').value===''||$('pStock').value===''||![cost,price,stock].every(Number.isFinite)||cost<0||price<0||stock<0||!Number.isInteger(stock)){toast('Ürün bilgilerini kontrol et.');return}let obj={name,cost,price,stock,barcode:$('pBarcode').value.trim(),size:$('pSize').value.trim(),color:$('pColor').value.trim()};if(id){let p=db.products.find(x=>String(x.id)===id);Object.assign(p,obj)}else db.products.push({id:uid(),...obj});persist();clearProductForm();render();toast('Ürün kaydedildi.')});
+$('cancelProductEdit').onclick=clearProductForm;
+$('productList').addEventListener('click',e=>{let ed=e.target.closest('[data-edit-product]'),del=e.target.closest('[data-del-product]');if(ed){let p=db.products.find(x=>String(x.id)===ed.dataset.editProduct);if(!p)return;$('editProductId').value=p.id;$('pName').value=p.name;$('pCost').value=p.cost;$('pPrice').value=p.price;$('pStock').value=p.stock;$('pBarcode').value=p.barcode;$('pSize').value=p.size;$('pColor').value=p.color;$('productFormTitle').textContent='Ürünü düzenle';$('saveProduct').textContent='Değişiklikleri kaydet';$('cancelProductEdit').classList.remove('hidden');window.scrollTo(0,0)}if(del){let p=db.products.find(x=>String(x.id)===del.dataset.delProduct);if(p&&confirm(p.name+' silinsin mi? Geçmiş satış kayıtları korunur.')){db.products=db.products.filter(x=>x!==p);persist();render()}}});
+$('productSearch').oninput=renderProducts;
+$('saleSearch').oninput=renderSearch;$('saleResults').addEventListener('click',e=>{let b=e.target.closest('[data-add-cart]');if(!b)return;let p=db.products.find(x=>String(x.id)===b.dataset.addCart),i=cart.find(x=>String(x.productId)===String(p.id));if(i){if(i.qty>=p.stock){toast('Stok miktarını aşıyorsun.');return}i.qty++}else cart.push({productId:p.id,name:p.name,price:p.price,cost:p.cost,qty:1});renderCart()});
+$('cartList').addEventListener('click',e=>{let plus=e.target.closest('[data-cart-plus]'),minus=e.target.closest('[data-cart-minus]'),rem=e.target.closest('[data-cart-remove]');let id=(plus||minus||rem)?.dataset.cartPlus||(plus||minus||rem)?.dataset.cartMinus||(plus||minus||rem)?.dataset.cartRemove;if(!id)return;let i=cart.find(x=>String(x.productId)===id),p=db.products.find(x=>String(x.id)===id);if(plus){if(i.qty>=p.stock){toast('Yeterli stok yok.');return}i.qty++}if(minus){i.qty--;if(i.qty<=0)cart=cart.filter(x=>x!==i)}if(rem)cart=cart.filter(x=>x!==i);renderCart()});
+$('saleDiscount').oninput=renderCart;
+$('saveSale').onclick=()=>{if(!cart.length){toast('Sepete ürün ekle.');return}for(let i of cart){let p=db.products.find(x=>String(x.id)===String(i.productId));if(!p||p.stock<i.qty){toast(i.name+' için stok yetersiz.');return}}let subtotal=cart.reduce((n,i)=>n+i.price*i.qty,0),disc=Number($('saleDiscount').value)||0;if(disc<0||disc>subtotal){toast('İndirim toplam tutarı aşamaz.');return}let total=subtotal-disc,cost=cart.reduce((n,i)=>n+i.cost*i.qty,0),profit=total-cost,items=cart.map(i=>({...i,total:i.price*i.qty,profit:(i.price-i.cost)*i.qty}));items.forEach(i=>{let p=db.products.find(x=>String(x.id)===String(i.productId));p.stock-=i.qty});db.sales.push({id:uid(),items,total,profit,discount:disc,payment:$('salePayment').value,customer:$('saleCustomer').value.trim(),date:new Date($('saleDate').value||nowLocal()).toISOString(),status:'completed',returnedQty:0});cart=[];$('saleSearch').value='';$('saleDiscount').value='0';$('saleCustomer').value='';$('saleDate').value=nowLocal();persist();render();toast('Satış kaydedildi; stok güncellendi.')};
+$('historyList').addEventListener('click',e=>{let cancel=e.target.closest('[data-cancel-sale]'),edit=e.target.closest('[data-edit-sale]');let id=(cancel||edit)?.dataset.cancelSale||(cancel||edit)?.dataset.editSale;if(!id)return;let s=db.sales.find(x=>String(x.id)===id);if(cancel){if(s.returnedQty){toast('İade kaydı olan satış doğrudan iptal edilemez.');return}if(confirm('Satış iptal edilsin ve ürünler stoğa geri eklensin mi?')){s.items.forEach(i=>{let p=db.products.find(x=>String(x.id)===String(i.productId));if(p)p.stock+=i.qty});s.status='cancelled';persist();render();toast('Satış iptal edildi, stok geri yüklendi.')}}if(edit){let cust=prompt('Müşteri adı:',s.customer||'');if(cust===null)return;let payment=prompt('Ödeme yöntemi (Nakit / IBAN / Kredi kartı):',s.payment);if(payment===null)return;if(!['Nakit','IBAN','Kredi kartı'].includes(payment)){toast('Ödeme yöntemi geçersiz.');return}s.customer=cust;s.payment=payment;persist();render();toast('Satış bilgisi düzeltildi. Ürün/adet/tutar değişikliği için iptal edip yeniden satış kaydı oluştur.')}});
+$('historyFrom').onchange=renderHistory;$('historyTo').onchange=renderHistory;$('historySearch').oninput=renderHistory;
+$('saveExpense').onclick=()=>{let id=$('editExpenseId').value,name=$('eName').value.trim(),amount=Number($('eAmount').value);if(!name||$('eAmount').value===''||!Number.isFinite(amount)||amount<=0){toast('Gider adı ve tutarı gir.');return}let obj={name,amount,category:$('eCategory').value,date:new Date($('eDate').value||nowLocal()).toISOString()};if(id)Object.assign(db.expenses.find(x=>String(x.id)===id),obj);else db.expenses.push({id:uid(),...obj});clearExpenseForm();persist();render();toast('Gider kaydedildi.')};
+function clearExpenseForm(){['editExpenseId','eName','eAmount'].forEach(i=>$(i).value='');$('eDate').value=nowLocal();$('expenseFormTitle').textContent='Gider ekle';$('saveExpense').textContent='Gideri kaydet';$('cancelExpenseEdit').classList.add('hidden')}
+$('cancelExpenseEdit').onclick=clearExpenseForm;
+$('expenseList').addEventListener('click',e=>{let ed=e.target.closest('[data-edit-expense]'),del=e.target.closest('[data-del-expense]');if(ed){let x=db.expenses.find(v=>String(v.id)===ed.dataset.editExpense);$('editExpenseId').value=x.id;$('eName').value=x.name;$('eAmount').value=x.amount;$('eCategory').value=x.category;$('eDate').value=toLocal(x.date);$('expenseFormTitle').textContent='Gideri düzenle';$('saveExpense').textContent='Değişiklikleri kaydet';$('cancelExpenseEdit').classList.remove('hidden');window.scrollTo(0,0)}if(del){let x=db.expenses.find(v=>String(v.id)===del.dataset.delExpense);if(x&&confirm('Bu gider silinsin mi? Raporlardan da çıkarılacak.')){db.expenses=db.expenses.filter(v=>v!==x);persist();render()}}});
+$('expenseFrom').onchange=renderExpenses;$('expenseTo').onchange=renderExpenses;
+function toLocal(iso){let d=new Date(iso);d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,16)}
+$('returnSearch').oninput=()=>{let q=$('returnSearch').value.toLocaleLowerCase('tr-TR');let arr=completedSales().filter(s=>(s.items.map(i=>i.name).join(' ')+' '+s.customer+' '+s.id).toLocaleLowerCase('tr-TR').includes(q));$('returnSales').innerHTML=arr.length?arr.slice(-20).reverse().map(s=>`<button class="result" data-pick-return="${esc(s.id)}"><span><b>${esc(s.items.map(i=>i.name+' ×'+i.qty).join(', '))}</b><span class="muted" style="display:block">${dt(s.date)} • ${esc(s.customer||'')}</span></span><b>${money(s.total)}</b></button>`).join(''):'<div class="empty">Satış bulunamadı.</div>'};
+$('returnSales').addEventListener('click',e=>{let b=e.target.closest('[data-pick-return]');if(!b)return;selectedReturnSale=db.sales.find(s=>String(s.id)===b.dataset.pickReturn);$('returnSaleId').value=selectedReturnSale.id;$('returnForm').classList.remove('hidden');$('returnQty').max=selectedReturnSale.items.reduce((n,i)=>n+i.qty,0)-(selectedReturnSale.returnedQty||0);$('returnQty').value=1});
+$('returnType').onchange=()=>{$('exchangeArea').classList.toggle('hidden',$('returnType').value!=='exchange')};
+$('exchangeSearch').oninput=()=>{let q=$('exchangeSearch').value.toLocaleLowerCase('tr-TR');let a=db.products.filter(p=>p.stock>0&&(p.name+' '+p.barcode).toLocaleLowerCase('tr-TR').includes(q)).slice(0,10);$('exchangeResults').innerHTML=a.map(p=>`<button class="result" data-exchange="${esc(p.id)}">${esc(p.name)} • stok ${p.stock} • ${money(p.price)}</button>`).join('')};
+$('exchangeResults').addEventListener('click',e=>{let b=e.target.closest('[data-exchange]');if(!b)return;exchangeProductId=b.dataset.exchange;let p=db.products.find(x=>String(x.id)===exchangeProductId);$('exchangeChosen').textContent=p.name+' seçildi.'});
+$('saveReturn').onclick=()=>{let s=selectedReturnSale;if(!s){toast('Önce satış seç.');return}let qty=Number($('returnQty').value),already=s.returnedQty||0,max=s.items.reduce((n,i)=>n+i.qty,0)-already;if(!Number.isInteger(qty)||qty<1||qty>max){toast('İade adedini kontrol et.');return}let item=s.items.find(i=>i.qty-(i.returnedQty||0)>0);if(!item){toast('İade edilecek ürün kalmadı.');return}let amount=item.price*qty,prod=db.products.find(p=>String(p.id)===String(item.productId));if($('returnType').value==='exchange'){let np=db.products.find(p=>String(p.id)===exchangeProductId);if(!np||np.stock<qty){toast('Değişim için yeni ürün seç; stok yetersiz.');return}np.stock-=qty;if(prod)prod.stock+=qty;$('exchangeSearch').value='';exchangeProductId=null}else if(prod)prod.stock+=qty;item.returnedQty=(item.returnedQty||0)+qty;s.returnedQty=already+qty;db.returns.push({id:uid(),saleId:s.id,name:item.name,qty,amount,type:$('returnType').value,reason:$('returnReason').value.trim(),payment:$('returnPayment').value,date:new Date().toISOString()});persist();$('returnForm').classList.add('hidden');$('returnReason').value='';selectedReturnSale=null;render();toast('İade/değişim kaydedildi; stok güncellendi.')};
+$('reportFrom').onchange=renderReports;$('reportTo').onchange=renderReports;document.querySelectorAll('[data-period]').forEach(b=>b.onclick=()=>{let d=new Date(),start=new Date(d);if(b.dataset.period==='day'){}if(b.dataset.period==='week'){let day=(d.getDay()+6)%7;start.setDate(d.getDate()-day)}if(b.dataset.period==='month')start=new Date(d.getFullYear(),d.getMonth(),1);if(b.dataset.period==='year')start=new Date(d.getFullYear(),0,1);$('reportFrom').value=dayKey(start);$('reportTo').value=dayKey(d);renderReports()});
+$('exportData').onclick=()=>{let blob=new Blob([JSON.stringify({...db,backupCreatedAt:new Date().toISOString()},null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='dogu-store-yedek-'+dayKey(Date.now())+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)};
+$('importFile').onchange=async e=>{let f=e.target.files[0];if(!f)return;try{let d=JSON.parse(await f.text());if(!Array.isArray(d.products)||!Array.isArray(d.sales))throw Error();if(!confirm('Mevcut verilerin üzerine yedek dosyası yüklensin mi? Önce mevcut veriyi yedeklemen önerilir.'))return;db={products:d.products,sales:d.sales,expenses:d.expenses||[],returns:d.returns||[],pinHash:d.pinHash||db.pinHash};persist();render();toast('Yedek geri yüklendi.')}catch(err){toast('Yedek dosyası okunamadı.')}e.target.value=''};
+$('clearData').onclick=()=>{if(confirm('Tüm ürün, satış, gider ve iade kayıtları silinecek. Geri alınamaz. Önce yedek aldın mı?')){db={products:[],sales:[],expenses:[],returns:[],pinHash:db.pinHash};cart=[];persist();render();toast('Veriler silindi.')}};
+async function hash(s){let data=new TextEncoder().encode(s);let buf=await crypto.subtle.digest('SHA-256',data);return [...new Uint8Array(buf)].map(x=>x.toString(16).padStart(2,'0')).join('')}
+$('setPin').onclick=async()=>{let p=$('newPin').value;if(!/^\d{4,8}$/.test(p)){toast('PIN 4–8 rakam olmalı.');return}db.pinHash=await hash(p);persist();$('newPin').value='';toast('Bu cihaz için PIN ayarlandı.')};
+$('lockNow').onclick=()=>{if(!db.pinHash){toast('Önce PIN belirle.');return}let p=prompt('Yönetici PIN kodu:');if(p===null)return;hash(p).then(h=>{if(h===db.pinHash)toast('PIN doğru.');else toast('PIN yanlış.')})};
+$('saleDate').value=nowLocal();$('eDate').value=nowLocal();$('reportFrom').value=dayKey(new Date(new Date().getFullYear(),new Date().getMonth(),1));$('reportTo').value=dayKey(Date.now());
 render();
 })();
-</script>
-</body></html>
+</script></body></html>
