@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#111111">
+<title>DOĞU STORE</title>
+<style>
+:root{--bg:#101010;--panel:#1b1b1b;--gold:#d6b15e;--muted:#aaa;--line:#333;--green:#65c18c;--red:#ff7777}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#f5f5f5;font:15px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+header{padding:22px 18px 16px;background:#080808;border-bottom:1px solid #393126;position:sticky;top:0;z-index:3}
+h1{margin:0;color:var(--gold);font-size:23px;letter-spacing:2px}header small{color:#bbb;letter-spacing:1px}
+nav{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:10px;background:#111;position:sticky;top:77px;z-index:2}
+nav button{padding:11px 3px;border:1px solid #383838;border-radius:10px;background:#202020;color:#ddd;font-size:12px}
+nav button.active{background:var(--gold);color:#111;border-color:var(--gold);font-weight:700}
+main{padding:14px;max-width:720px;margin:auto}.panel{display:none}.panel.active{display:block}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;margin:0 0 12px}
+h2{font-size:18px;margin:0 0 12px;color:var(--gold)}.stats{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.stat{background:#222;border-radius:12px;padding:13px}.stat span{display:block;color:var(--muted);font-size:12px}.stat b{display:block;font-size:20px;margin-top:5px}
+label{display:block;color:#ccc;font-size:13px;margin:10px 0 5px}
+input,select{width:100%;padding:12px;border-radius:9px;border:1px solid #444;background:#101010;color:white;font-size:16px}
+button.action{width:100%;padding:13px;border:0;border-radius:10px;background:var(--gold);color:#111;font-weight:700;font-size:15px;margin-top:12px}
+button.secondary{background:#333;color:#fff}button.danger{background:#6d2929;color:#fff}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.item{padding:11px 0;border-bottom:1px solid #333;display:flex;justify-content:space-between;gap:10px;align-items:center}
+.item:last-child{border:0}.muted{color:var(--muted);font-size:12px}.pill{font-size:11px;color:#111;background:var(--gold);border-radius:20px;padding:4px 8px}
+.empty{color:#aaa;text-align:center;padding:18px}
+#notice{position:fixed;bottom:15px;left:12px;right:12px;background:#272727;border:1px solid #555;padding:12px;border-radius:10px;display:none;z-index:9}
+footer{text-align:center;color:#777;font-size:11px;padding:20px}
+</style>
+</head>
+<body>
+<header><h1>DOĞU STORE</h1><small>STİL DOĞU’DAN DOĞAR</small></header>
+<nav>
+<button class="active" data-tab="home">Özet</button><button data-tab="products">Ürünler</button><button data-tab="sales">Satış</button><button data-tab="reports">Rapor</button>
+</nav>
+<main>
+<section id="home" class="panel active">
+<div class="stats">
+<div class="stat"><span>Bugünkü ciro</span><b id="todayRevenue">₺0</b></div>
+<div class="stat"><span>Bugünkü kâr</span><b id="todayProfit">₺0</b></div>
+<div class="stat"><span>Ürün çeşidi</span><b id="productCount">0</b></div>
+<div class="stat"><span>Toplam stok</span><b id="stockCount">0</b></div>
+</div>
+<div class="card" style="margin-top:12px"><h2>Son satışlar</h2><div id="recentSales" class="empty">Henüz satış yok.</div></div>
+</section>
+<section id="products" class="panel">
+<div class="card"><h2>Yeni ürün ekle</h2>
+<label>Ürün adı</label><input id="pName" placeholder="Örn. Siyah triko kazak">
+<div class="row"><div><label>Alış fiyatı (₺)</label><input id="pCost" type="number" min="0" inputmode="decimal" placeholder="400"></div><div><label>Satış fiyatı (₺)</label><input id="pPrice" type="number" min="0" inputmode="decimal" placeholder="850"></div></div>
+<div class="row"><div><label>Stok adedi</label><input id="pStock" type="number" min="0" inputmode="numeric" placeholder="10"></div><div><label>Barkod (isteğe bağlı)</label><input id="pBarcode" placeholder="Barkod"></div></div>
+<button class="action" id="addProduct">Ürünü kaydet</button></div>
+<div class="card"><h2>Ürün listesi</h2><input id="productSearch" placeholder="Ürün veya barkod ara"><div id="productList" class="empty">Henüz ürün eklenmedi.</div></div>
+</section>
+<section id="sales" class="panel">
+<div class="card"><h2>Satış kaydı</h2>
+<label>Ürün</label><select id="saleProduct"><option value="">Ürün seç</option></select>
+<div class="row"><div><label>Adet</label><input id="saleQty" type="number" min="1" value="1" inputmode="numeric"></div><div><label>Ödeme</label><select id="salePayment"><option>Nakit</option><option>IBAN</option><option>Kredi kartı</option></select></div></div>
+<label>Müşteri adı (isteğe bağlı)</label><input id="saleCustomer" placeholder="Müşteri adı">
+<button class="action" id="saveSale">Satışı kaydet</button>
+<p class="muted">Satış kaydedilince stok otomatik azalır. Kâr, satış fiyatı eksi alış fiyatı olarak hesaplanır.</p></div>
+<div class="card"><h2>Satış geçmişi</h2><div id="salesList" class="empty">Henüz satış yok.</div></div>
+</section>
+<section id="reports" class="panel">
+<div class="stats">
+<div class="stat"><span>Toplam ciro</span><b id="totalRevenue">₺0</b></div>
+<div class="stat"><span>Toplam ürün kârı</span><b id="totalProfit">₺0</b></div>
+<div class="stat"><span>Nakit</span><b id="cashTotal">₺0</b></div>
+<div class="stat"><span>IBAN + Kart</span><b id="otherTotal">₺0</b></div>
+</div>
+<div class="card" style="margin-top:12px"><h2>Veri yedekleme</h2><button class="action" id="exportData">Yedeği indir</button><label>Yedek dosyasından geri yükle</label><input id="importFile" type="file" accept="application/json"><button class="action secondary" id="clearData">Tüm kayıtları sil</button><p class="muted">Kayıtlar bu cihazın tarayıcısında saklanır. Bu sürümde bulut yedekleme ve kullanıcı hesabı yoktur.</p></div>
+</section>
+</main>
+<footer>DOĞU STORE • Basit satış ve stok takibi</footer><div id="notice"></div>
+<script>
+(function(){
+'use strict';
+const $=id=>document.getElementById(id), money=n=>'₺'+Number(n||0).toLocaleString('tr-TR',{maximumFractionDigits:2});
+let db={products:[],sales:[]};
+try{const saved=localStorage.getItem('dogu_store_v1');if(saved){const parsed=JSON.parse(saved);if(parsed&&Array.isArray(parsed.products)&&Array.isArray(parsed.sales))db=parsed;}}catch(e){}
+function persist(){try{localStorage.setItem('dogu_store_v1',JSON.stringify(db));}catch(e){notify('Bu tarayıcı kayıt alanına izin vermedi.');}}
+function notify(msg){const n=$('notice');n.textContent=msg;n.style.display='block';clearTimeout(notify.t);notify.t=setTimeout(()=>n.style.display='none',2600);}
+function safe(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function dateKey(d){const x=new Date(d);return x.getFullYear()+'-'+String(x.getMonth()+1).padStart(2,'0')+'-'+String(x.getDate()).padStart(2,'0');}
+function render(){
+const today=dateKey(Date.now()), ts=db.sales.filter(s=>dateKey(s.date)===today);
+$('todayRevenue').textContent=money(ts.reduce((a,s)=>a+s.total,0));$('todayProfit').textContent=money(ts.reduce((a,s)=>a+s.profit,0));
+$('productCount').textContent=db.products.length;$('stockCount').textContent=db.products.reduce((a,p)=>a+p.stock,0);
+$('totalRevenue').textContent=money(db.sales.reduce((a,s)=>a+s.total,0));$('totalProfit').textContent=money(db.sales.reduce((a,s)=>a+s.profit,0));
+$('cashTotal').textContent=money(db.sales.filter(s=>s.payment==='Nakit').reduce((a,s)=>a+s.total,0));
+$('otherTotal').textContent=money(db.sales.filter(s=>s.payment!=='Nakit').reduce((a,s)=>a+s.total,0));
+$('productList').innerHTML=db.products.length?db.products.filter(p=>(p.name+' '+p.barcode).toLowerCase().includes($('productSearch').value.toLowerCase())).map(p=>`<div class="item"><div><b>${safe(p.name)}</b><div class="muted">Alış ${money(p.cost)} • Satış ${money(p.price)} • Stok ${p.stock} ${p.barcode?'• '+safe(p.barcode):''}</div></div><span class="pill">${p.stock<=2?'Az stok':'Stokta'}</span></div>`).join(''):'<div class="empty">Henüz ürün eklenmedi.</div>';
+$('saleProduct').innerHTML='<option value="">Ürün seç</option>'+db.products.map(p=>`<option value="${p.id}">${safe(p.name)} — stok: ${p.stock} — ${money(p.price)}</option>`).join('');
+const list=arr=>arr.length?arr.map(s=>`<div class="item"><div><b>${safe(s.name)}</b><div class="muted">${new Date(s.date).toLocaleString('tr-TR')} • ${s.qty} adet • ${safe(s.payment)}${s.customer?' • '+safe(s.customer):''}</div></div><div><b>${money(s.total)}</b><div class="muted">Kâr ${money(s.profit)}</div></div></div>`).join(''):'<div class="empty">Henüz satış yok.</div>';
+$('salesList').innerHTML=list([...db.sales].reverse());$('recentSales').innerHTML=list([...db.sales].slice(-3).reverse());
+}
+document.querySelectorAll('nav button').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.panel').forEach(x=>x.classList.toggle('active',x.id===b.dataset.tab));render();}));
+$('addProduct').addEventListener('click',()=>{const name=$('pName').value.trim(),cost=Number($('pCost').value),price=Number($('pPrice').value),stock=Number($('pStock').value);if(!name||$('pCost').value===''||$('pPrice').value===''||$('pStock').value===''||cost<0||price<0||stock<0||!Number.isFinite(stock)){notify('Ürün bilgilerini doğru doldur.');return;}db.products.push({id:Date.now()+Math.random(),name,cost,price,stock:Math.floor(stock),barcode:$('pBarcode').value.trim()});persist();['pName','pCost','pPrice','pStock','pBarcode'].forEach(id=>$(id).value='');render();notify('Ürün kaydedildi.');});
+$('productSearch').addEventListener('input',render);
+$('saveSale').addEventListener('click',()=>{const p=db.products.find(x=>String(x.id)===$('saleProduct').value),qty=Math.floor(Number($('saleQty').value));if(!p){notify('Önce ürün seç.');return;}if(!Number.isInteger(qty)||qty<1){notify('Adet en az 1 olmalı.');return;}if(p.stock<qty){notify('Yeterli stok yok.');return;}const total=p.price*qty,profit=(p.price-p.cost)*qty;p.stock-=qty;db.sales.push({id:Date.now()+Math.random(),productId:p.id,name:p.name,qty,total,profit,payment:$('salePayment').value,customer:$('saleCustomer').value.trim(),date:new Date().toISOString()});persist();$('saleQty').value=1;$('saleCustomer').value='';render();notify('Satış kaydedildi, stok düşüldü.');});
+$('exportData').addEventListener('click',()=>{const blob=new Blob([JSON.stringify(db,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='dogu-store-yedek.json';a.click();URL.revokeObjectURL(url);});
+$('importFile').addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;try{const d=JSON.parse(await f.text());if(!Array.isArray(d.products)||!Array.isArray(d.sales))throw Error();db=d;persist();render();notify('Yedek geri yüklendi.');}catch(_){notify('Yedek dosyası geçersiz.');}e.target.value='';});
+$('clearData').addEventListener('click',()=>{if(confirm('Tüm ürün ve satış kayıtları silinsin mi? Bu işlem geri alınamaz.')){db={products:[],sales:[]};persist();render();notify('Kayıtlar silindi.');}});
+render();
+})();
+</script>
+</body></html>
