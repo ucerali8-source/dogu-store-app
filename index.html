@@ -208,7 +208,7 @@ render();
     const role = String(data.role).toLowerCase();
     const isAdmin = role === 'admin' || role === 'manager';
     const financeEmployee = String(user.email || '').toLowerCase() === 'dogustore27@gmail.com';
-    document.body.classList.toggle('employee', !isAdmin);
+    document.body.classList.toggle('employee', !isAdmin && !financeEmployee);
     document.body.classList.toggle('employee-finance', !isAdmin && financeEmployee);
     document.querySelectorAll('#nav button[data-tab="settings"]').forEach(b => b.classList.toggle('hidden', !isAdmin));
     if (!isAdmin) document.querySelector('#nav button[data-tab="sales"]').click();
