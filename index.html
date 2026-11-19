@@ -29,6 +29,9 @@ button{cursor:pointer}button.action{width:100%;padding:12px;border:0;border-radi
 /* Personel görünümü: yalnızca satış ekranı */
 body.employee #nav button:not([data-tab="sales"]){display:none!important}
 body.employee main>.panel:not(#sales){display:none!important}
+/* Yetkili personel: satış + giderler + raporlar */
+body.employee-finance #nav button:not([data-tab="sales"]):not([data-tab="expenses"]):not([data-tab="reports"]){display:none!important}
+body.employee-finance main>.panel:not(#sales):not(#expenses):not(#reports){display:none!important}
 </style></head>
 <body>
 <div id="loginGate">
@@ -204,7 +207,9 @@ render();
     }
     const role = String(data.role).toLowerCase();
     const isAdmin = role === 'admin' || role === 'manager';
+    const financeEmployee = String(user.email || '').toLowerCase() === 'dogustore27@gmail.com';
     document.body.classList.toggle('employee', !isAdmin);
+    document.body.classList.toggle('employee-finance', !isAdmin && financeEmployee);
     document.querySelectorAll('#nav button[data-tab="settings"]').forEach(b => b.classList.toggle('hidden', !isAdmin));
     if (!isAdmin) document.querySelector('#nav button[data-tab="sales"]').click();
     if (!isAdmin && document.getElementById('settings').classList.contains('active')) {
