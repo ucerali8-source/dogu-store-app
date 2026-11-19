@@ -124,7 +124,7 @@ let db={products:[],sales:[],expenses:[],returns:[],collections:[],pinHash:null}
 try{let raw=localStorage.getItem('dogu_store_v1');if(raw){let old=JSON.parse(raw);if(old&&Array.isArray(old.products)&&Array.isArray(old.sales))db={products:old.products,sales:old.sales,expenses:old.expenses||[],returns:old.returns||[],collections:old.collections||[],pinHash:old.pinHash||null};}}catch(e){}
 db.products.forEach(p=>{p.id=p.id??uid();p.cost=Number(p.cost)||0;p.price=Number(p.price)||0;p.stock=Number(p.stock)||0;p.barcode=p.barcode||'';p.size=p.size||'';p.color=p.color||'';});
 db.sales.forEach(s=>{s.id=s.id??uid();s.total=Number(s.total)||0;s.profit=Number(s.profit)||0;s.status=s.status||'completed';s.paidAmount=Number.isFinite(Number(s.paidAmount))?Number(s.paidAmount):(s.payment==='Veresiye'?0:s.total);s.items=s.items||[{productId:s.productId,name:s.name,qty:s.qty||1,cost:s.cost||0,price:s.price??(s.total/(s.qty||1)),total:s.total,profit:s.profit}];});
-function persist(){try{localStorage.setItem('dogu_store_v1',JSON.stringify(db));}catch(e){toast('Tarayıcı depolama alanı dolu olabilir. Yedek alıp tekrar deneyin.');}}
+function persist(){try{localStorage.setItem('dogu_store_v1',JSON.stringify(db));window.dispatchEvent(new CustomEvent('dogu-store-local-change',{detail:JSON.stringify(db)}));}catch(e){toast('Tarayıcı depolama alanı dolu olabilir. Yedek alıp tekrar deneyin.');}}
 function toast(t){let n=$('notice');n.textContent=t;n.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(()=>n.style.display='none',2600)}
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function dt(v){return new Date(v).toLocaleString('tr-TR',{dateStyle:'short',timeStyle:'short'})}
@@ -184,6 +184,15 @@ async function hash(s){let data=new TextEncoder().encode(s);let buf=await crypto
 $('setPin').onclick=async()=>{let p=$('newPin').value;if(!/^\d{4,8}$/.test(p)){toast('PIN 4–8 rakam olmalı.');return}db.pinHash=await hash(p);persist();$('newPin').value='';toast('Bu cihaz için PIN ayarlandı.')};
 $('lockNow').onclick=()=>{if(!db.pinHash){toast('Önce PIN belirle.');return}let p=prompt('Yönetici PIN kodu:');if(p===null)return;hash(p).then(h=>{if(h===db.pinHash)toast('PIN doğru.');else toast('PIN yanlış.')})};
 $('saleDate').value=nowLocal();$('eDate').value=nowLocal();$('reportFrom').value=dayKey(new Date(new Date().getFullYear(),new Date().getMonth(),1));$('reportTo').value=dayKey(Date.now());
+window.__doguStore = {
+  exportData: () => JSON.parse(JSON.stringify(db)),
+  importData: data => {
+    if (!data || !Array.isArray(data.products) || !Array.isArray(data.sales)) throw new Error('Bulut verisi geçersiz.');
+    db = {products:data.products, sales:data.sales, expenses:data.expenses||[], returns:data.returns||[], collections:data.collections||[], pinHash:data.pinHash||null};
+    localStorage.setItem('dogu_store_v1', JSON.stringify(db));
+    render();
+  }
+};
 render();
 })();
 </script>
@@ -218,6 +227,49 @@ render();
     document.getElementById('sessionUser').textContent = user.email + (isAdmin ? ' • Yönetici' : ' • Personel');
     bar.classList.remove('hidden');
     gate.style.display = 'none';
+    await connectSharedStore(user);
+  }
+  let syncChannel = null, syncTimer = null, syncing = false;
+  async function connectSharedStore(user) {
+    if (syncChannel) { await client.removeChannel(syncChannel); syncChannel = null; }
+    const status = document.getElementById('loginError');
+    const { data: row, error } = await client.from('store_state').select('data,updated_by').eq('id','main').maybeSingle();
+    if (error) { toastSync('Ortak veri bağlantısı kurulamadı: ' + error.message); return; }
+    if (row && row.data && Array.isArray(row.data.products) && Array.isArray(row.data.sales)) {
+      try { window.__doguStore.importData(row.data); }
+      catch(e) { toastSync('Ortak kayıtlar okunamadı: ' + e.message); return; }
+    } else {
+      const { error: upErr } = await client.from('store_state').upsert({id:'main',data:window.__doguStore.exportData(),updated_by:user.id},{onConflict:'id'});
+      if (upErr) { toastSync('İlk veri aktarımı başarısız: ' + upErr.message); return; }
+    }
+    window.removeEventListener('dogu-store-local-change', onLocalChange);
+    window.addEventListener('dogu-store-local-change', onLocalChange);
+    syncChannel = client.channel('dogu-store-shared-data')
+      .on('postgres_changes',{event:'UPDATE',schema:'public',table:'store_state',filter:'id=eq.main'},payload=>{
+        const remote = payload.new?.data;
+        if (!remote || !Array.isArray(remote.products) || !Array.isArray(remote.sales)) return;
+        const local = window.__doguStore.exportData();
+        if (JSON.stringify(remote) !== JSON.stringify(local)) {
+          try { syncing = true; window.__doguStore.importData(remote); toastSync('Diğer cihazdaki kayıtlar güncellendi.'); }
+          catch(e) { toastSync('Güncel kayıtlar alınamadı.'); }
+          finally { syncing = false; }
+        }
+      }).subscribe();
+    toastSync('Ortak veri bağlantısı hazır.');
+  }
+  function onLocalChange() {
+    if (syncing) return;
+    clearTimeout(syncTimer);
+    syncTimer = setTimeout(async () => {
+      const { data: sessionData } = await client.auth.getSession();
+      const user = sessionData.session?.user;
+      if (!user) return;
+      const { error } = await client.from('store_state').upsert({id:'main',data:window.__doguStore.exportData(),updated_by:user.id},{onConflict:'id'});
+      if (error) toastSync('Buluta kaydedilemedi: ' + error.message);
+    },700);
+  }
+  function toastSync(message) {
+    const n=document.getElementById('notice'); if(n){n.textContent=message;n.style.display='block';clearTimeout(toastSync.t);toastSync.t=setTimeout(()=>n.style.display='none',3500);}
   }
   document.getElementById('loginButton').addEventListener('click', async () => {
     const email = document.getElementById('loginEmail').value.trim();
