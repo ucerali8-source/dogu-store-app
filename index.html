@@ -264,7 +264,7 @@ render();
       const { data: sessionData } = await client.auth.getSession();
       const user = sessionData.session?.user;
       if (!user) return;
-      const { error } = await client.from('store_state').upsert({id:'main',data:window.__doguStore.exportData(),updated_by:user.id},{onConflict:'id'});
+      const { error } = await client.from('store_state').upsert({id:1,data:window.__doguStore.exportData(),updated_by:user.id},{onConflict:'id'});
       if (error) toastSync('Buluta kaydedilemedi: ' + error.message);
     },700);
   }
