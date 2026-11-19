@@ -17,9 +17,29 @@ button{cursor:pointer}button.action{width:100%;padding:12px;border:0;border-radi
 .result{width:100%;display:flex;justify-content:space-between;align-items:center;text-align:left;background:#222;color:#fff;border:0;border-bottom:1px solid #444;padding:11px;border-radius:0}.result:first-child{border-radius:8px 8px 0 0}.result:last-child{border-radius:0 0 8px 8px}
 .hidden{display:none!important}.hint{font-size:11px;color:#999;line-height:1.5}.tag{display:inline-block;border:1px solid #555;border-radius:6px;padding:3px 6px;font-size:10px;color:#ccc;margin:2px}
 @media(min-width:650px){.stats{grid-template-columns:repeat(4,1fr)}}
+
+#loginGate{position:fixed;inset:0;z-index:9999;background:#0d0d0e;display:flex;align-items:center;justify-content:center;padding:20px}
+#loginGate .login-card{width:100%;max-width:390px;background:#19191b;border:1px solid #d8b765;border-radius:16px;padding:22px}
+#loginGate h2{font-size:22px;margin:0 0 8px;color:#d8b765}
+#loginGate p{color:#aaa;font-size:13px;margin:0 0 18px}
+#loginError{color:#ff7777;font-size:13px;min-height:18px;margin-top:10px}
+#sessionBar{display:flex;justify-content:flex-end;align-items:center;gap:8px;padding:6px 12px;background:#111}
+#sessionBar span{color:#aaa;font-size:11px;overflow-wrap:anywhere}
+#sessionBar button{background:#333;color:#fff;border:1px solid #555;border-radius:7px;padding:7px 10px;font-size:12px}
 </style></head>
 <body>
+<div id="loginGate">
+  <div class="login-card">
+    <h2>DOĞU STORE</h2>
+    <p>Yönetici / Personel Girişi</p>
+    <label>E-posta</label><input id="loginEmail" type="email" autocomplete="username" placeholder="E-posta adresi">
+    <label>Şifre</label><input id="loginPassword" type="password" autocomplete="current-password" placeholder="Şifre">
+    <button class="action" id="loginButton">Giriş yap</button>
+    <div id="loginError"></div>
+  </div>
+</div>
 <header><h1>DOĞU STORE</h1><small>STİL DOĞU’DAN DOĞAR • YÖNETİM PANELİ</small></header>
+<div id="sessionBar" class="hidden"><span id="sessionUser"></span><button id="logoutButton">Çıkış yap</button></div>
 <nav id="nav">
 <button class="active" data-tab="home">Özet</button><button data-tab="products">Ürün / Stok</button><button data-tab="sales">Satış</button><button data-tab="history">Satış geçmişi</button><button data-tab="returns">İade / Değişim</button><button data-tab="credit">Veresiye / Cari</button><button data-tab="expenses">Giderler</button><button data-tab="reports">Raporlar</button><button data-tab="settings">Yönetim / Yedek</button>
 </nav>
@@ -160,4 +180,56 @@ $('lockNow').onclick=()=>{if(!db.pinHash){toast('Önce PIN belirle.');return}let
 $('saleDate').value=nowLocal();$('eDate').value=nowLocal();$('reportFrom').value=dayKey(new Date(new Date().getFullYear(),new Date().getMonth(),1));$('reportTo').value=dayKey(Date.now());
 render();
 })();
-</script></body></html>
+</script>
+<script>
+(()=> {
+  const SUPABASE_URL = 'https://lkaqdfmzxsqnwimfjbhy.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_nQ0kyh8UgOL66xd4fLMeZA_k-oD1q47';
+  const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  const gate = document.getElementById('loginGate');
+  const err = document.getElementById('loginError');
+  const bar = document.getElementById('sessionBar');
+  const showError = message => { err.textContent = message; };
+  async function enter(user) {
+    const { data, error } = await client.from('user_roles').select('role').eq('user_id', user.id).single();
+    if (error || !data || !['admin','manager','employee','staff'].includes(String(data.role).toLowerCase())) {
+      await client.auth.signOut();
+      gate.style.display = 'flex';
+      showError('Bu hesabın mağaza giriş yetkisi bulunamadı.');
+      return;
+    }
+    const role = String(data.role).toLowerCase();
+    const isAdmin = role === 'admin' || role === 'manager';
+    document.querySelectorAll('#nav button[data-tab="settings"]').forEach(b => b.classList.toggle('hidden', !isAdmin));
+    if (!isAdmin && document.getElementById('settings').classList.contains('active')) {
+      document.querySelector('#nav button[data-tab="home"]').click();
+    }
+    document.getElementById('sessionUser').textContent = user.email + (isAdmin ? ' • Yönetici' : ' • Personel');
+    bar.classList.remove('hidden');
+    gate.style.display = 'none';
+  }
+  document.getElementById('loginButton').addEventListener('click', async () => {
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value;
+    if (!email || !password) { showError('E-posta ve şifre gir.'); return; }
+    const button = document.getElementById('loginButton');
+    button.disabled = true; button.textContent = 'Kontrol ediliyor…'; showError('');
+    const { data, error } = await client.auth.signInWithPassword({ email, password });
+    button.disabled = false; button.textContent = 'Giriş yap';
+    if (error || !data.user) { showError('Giriş başarısız. E-posta veya şifreyi kontrol et.'); return; }
+    await enter(data.user);
+  });
+  document.getElementById('loginPassword').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('loginButton').click(); });
+  document.getElementById('logoutButton').addEventListener('click', async () => {
+    await client.auth.signOut();
+    bar.classList.add('hidden'); gate.style.display = 'flex';
+    document.getElementById('loginPassword').value = '';
+    showError('Oturum kapatıldı.');
+  });
+  client.auth.getSession().then(({data}) => {
+    if (data.session?.user) enter(data.session.user);
+    else gate.style.display = 'flex';
+  });
+})();
+</script>
+</body></html>
