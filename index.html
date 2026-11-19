@@ -233,19 +233,19 @@ render();
   async function connectSharedStore(user) {
     if (syncChannel) { await client.removeChannel(syncChannel); syncChannel = null; }
     const status = document.getElementById('loginError');
-    const { data: row, error } = await client.from('store_state').select('data,updated_by').eq('id','main').maybeSingle();
+    const { data: row, error } = await client.from('store_state').select('data,updated_by').eq('id',1).maybeSingle();
     if (error) { toastSync('Ortak veri bağlantısı kurulamadı: ' + error.message); return; }
     if (row && row.data && Array.isArray(row.data.products) && Array.isArray(row.data.sales)) {
       try { window.__doguStore.importData(row.data); }
       catch(e) { toastSync('Ortak kayıtlar okunamadı: ' + e.message); return; }
     } else {
-      const { error: upErr } = await client.from('store_state').upsert({id:'main',data:window.__doguStore.exportData(),updated_by:user.id},{onConflict:'id'});
+      const { error: upErr } = await client.from('store_state').upsert({id:1,data:window.__doguStore.exportData(),updated_by:user.id},{onConflict:'id'});
       if (upErr) { toastSync('İlk veri aktarımı başarısız: ' + upErr.message); return; }
     }
     window.removeEventListener('dogu-store-local-change', onLocalChange);
     window.addEventListener('dogu-store-local-change', onLocalChange);
     syncChannel = client.channel('dogu-store-shared-data')
-      .on('postgres_changes',{event:'UPDATE',schema:'public',table:'store_state',filter:'id=eq.main'},payload=>{
+      .on('postgres_changes',{event:'UPDATE',schema:'public',table:'store_state',filter:'id=eq.1'},payload=>{
         const remote = payload.new?.data;
         if (!remote || !Array.isArray(remote.products) || !Array.isArray(remote.sales)) return;
         const local = window.__doguStore.exportData();
