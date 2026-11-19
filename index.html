@@ -193,9 +193,10 @@ render();
   async function enter(user) {
     const { data, error } = await client.from('user_roles').select('role').eq('user_id', user.id).single();
     if (error || !data || !['admin','manager','employee','staff'].includes(String(data.role).toLowerCase())) {
+      console.error('DOĞU STORE role check:', error || 'user_roles kaydı bulunamadı', { userId: user.id, data });
       await client.auth.signOut();
       gate.style.display = 'flex';
-      showError('Bu hesabın mağaza giriş yetkisi bulunamadı.');
+      showError(error ? 'Yetki kontrolü hatası: ' + error.message : 'Bu kullanıcı için user_roles kaydı bulunamadı veya rol geçersiz.');
       return;
     }
     const role = String(data.role).toLowerCase();
