@@ -301,28 +301,18 @@ render();
  const button=document.getElementById('runConnectionCheck');
  const output=document.getElementById('connectionStatus');
  if(!button||!output)return;
- const url='https://lkaqdfmzxsqnwimfjbhy.supabase.co';
- const key='sb_publishable_nQ0kyh8UgOL66xd4fLMeZA_k-oD1q47';
  const line=(name,value)=>'<div style="padding:7px 0;border-bottom:1px solid #38383b"><b>'+name+':</b> '+value+'</div>';
- button.addEventListener('click',async()=>{
+ button.addEventListener('click',()=>{
   button.disabled=true;button.textContent='Kontrol ediliyor…';
-  output.textContent='Bağlantılar kontrol ediliyor…';
   let result='';
   result+=line('İnternet',navigator.onLine?'Tarayıcı çevrimiçi görünüyor':'Tarayıcı çevrimdışı görünüyor');
   result+=line('Uygulama adresi',location.origin);
   result+=line('Supabase kitaplığı',window.supabase?'Yüklendi':'Yüklenemedi');
-  const controller=new AbortController();
-  const timer=setTimeout(()=>controller.abort(),10000);
-  try{
-   const response=await fetch(url+'/auth/v1/health',{method:'GET',headers:{apikey:key},signal:controller.signal,cache:'no-store'});
-   result+=line('Supabase sunucusu',response.ok?'Erişilebilir (HTTP '+response.status+')':'Sunucu yanıt verdi (HTTP '+response.status+')');
-  }catch(error){
-   result+=line('Supabase sunucusu',error.name==='AbortError'?'10 saniyede yanıt vermedi':'Erişim hatası: '+(error.message||'bağlantı kurulamadı'));
-  }finally{clearTimeout(timer)}
   result+=line('Kontrol zamanı',new Date().toLocaleString('tr-TR'));
   output.innerHTML=result;
   button.disabled=false;button.textContent='Tekrar kontrol et';
  });
 })();
 </script>
+
 </body></html>
