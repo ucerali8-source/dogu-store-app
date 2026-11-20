@@ -112,6 +112,7 @@ body.employee-finance main>.panel:not(#sales):not(#expenses):not(#reports){displ
 </section>
 
 <section id="settings" class="panel">
+<div class="card"><h2>Bağlantı durumu kontrolü</h2><p class="hint">Bu test interneti, uygulamanın açıldığı adresi ve Supabase sunucusuna erişimi kontrol eder. Kayıtları değiştirmez.</p><div id="connectionStatus" class="muted">Henüz kontrol yapılmadı.</div><button class="action" id="runConnectionCheck">Bağlantıyı kontrol et</button></div>
 <div class="card"><h2>Yönetici kilidi</h2><p class="hint">Bu PIN, yalnızca bu cihazdaki ekranı kilitler; gerçek sunucu güvenliği değildir. Gerçek çok kullanıcılı güvenlik için sunucu tarafı hesap gerekir.</p><label>Yeni yönetici PIN'i (4–8 rakam)</label><input id="newPin" inputmode="numeric" type="password" maxlength="8" placeholder="PIN belirle"><button class="action" id="setPin">PIN belirle / değiştir</button><button class="action secondary" id="lockNow">Şimdi kilitle</button></div>
 <div class="card"><h2>Yedekleme ve geri yükleme</h2><button class="action" id="exportData">Yedeği indir (JSON)</button><label>Yedek dosyasından geri yükle</label><input id="importFile" type="file" accept="application/json"><p class="hint">Veriler bu tarayıcıda saklanır. Tarayıcı verileri silinirse yedek dosyasından geri yüklenebilir. Bu sürümde bulut senkronizasyonu yoktur.</p></div>
 <div class="card"><h2>Veri bilgisi</h2><div id="dataInfo" class="muted"></div><button class="action danger" id="clearData">Tüm verileri sil</button></div>
@@ -295,4 +296,23 @@ render();
   });
 })();
 </script>
+<script>
+(()=> {
+ const button=document.getElementById('runConnectionCheck');
+ const output=document.getElementById('connectionStatus');
+ if(!button||!output)return;
+ const line=(name,value)=>'<div style="padding:7px 0;border-bottom:1px solid #38383b"><b>'+name+':</b> '+value+'</div>';
+ button.addEventListener('click',()=>{
+  button.disabled=true;button.textContent='Kontrol ediliyor…';
+  let result='';
+  result+=line('İnternet',navigator.onLine?'Tarayıcı çevrimiçi görünüyor':'Tarayıcı çevrimdışı görünüyor');
+  result+=line('Uygulama adresi',location.origin);
+  result+=line('Supabase kitaplığı',window.supabase?'Yüklendi':'Yüklenemedi');
+  result+=line('Kontrol zamanı',new Date().toLocaleString('tr-TR'));
+  output.innerHTML=result;
+  button.disabled=false;button.textContent='Tekrar kontrol et';
+ });
+})();
+</script>
+
 </body></html>
